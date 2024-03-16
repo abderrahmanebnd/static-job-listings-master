@@ -1,11 +1,11 @@
-import { useEffect, useState } from "react";
-
+import { useEffect } from "react";
+import { useJobs, JobProvider } from "./JobContext";
 export default function App() {
   return (
-    <div>
+    <JobProvider>
       <Header />
       <Main />
-    </div>
+    </JobProvider>
   );
 }
 
@@ -32,67 +32,46 @@ function Header() {
 }
 
 function Main() {
-  const [jobs, setJobs] = useState([]);
-  const [searchedTags, setSearchedTags] = useState([]);
+  const { setJobs, searchedJobs } = useJobs();
 
-  const searchedJobs = searchedTags.length
-    ? jobs.filter((job) => {
-        const tags = job.languages.concat(...job.tools, job.level, job.role);
-        return searchedTags.every((searchedTag) => tags.includes(searchedTag));
-      })
-    : jobs;
-
-  useEffect(function () {
-    async function fetchData() {
-      try {
-        const res = await fetch("http://localhost:9000/jobs");
-        if (!res.ok) {
-          throw new Error("Something is wrong !");
+  useEffect(
+    function () {
+      async function fetchData() {
+        try {
+          const res = await fetch("http://localhost:9000/jobs");
+          if (!res.ok) {
+            throw new Error("Something is wrong !");
+          }
+          const data = await res.json();
+          setJobs(data);
+        } catch (err) {
+          console.log(err);
         }
-        const data = await res.json();
-        setJobs(data);
-      } catch (err) {
-        console.log(err);
       }
-    }
-    fetchData();
-  }, []);
-
-  function handleAddSearchTag(tag) {
-    if (!searchedTags.includes(tag))
-      setSearchedTags((searchedTags) => [...searchedTags, tag]);
-    else setSearchedTags(searchedTags);
-  }
-
-  function handleClear() {
-    setSearchedTags([]);
-  }
-
-  function handleRemoveTag(tagName) {
-    setSearchedTags(searchedTags.filter((tag) => tag !== tagName));
-  }
+      fetchData();
+    },
+    [setJobs]
+  );
 
   return (
     <main className="container main">
-      <Search
-        searchArray={searchedTags}
-        onClear={handleClear}
-        onRemoveTag={handleRemoveTag}
-      />
+      <Search />
       {searchedJobs.map((job) => (
-        <Job job={job} key={job.id} onAddTag={handleAddSearchTag} />
+        <Job job={job} key={job.id} />
       ))}
     </main>
   );
 }
 
-function Search({ searchArray, onClear, onRemoveTag }) {
+function Search() {
+  const { searchArray, onClear } = useJobs();
+
   if (searchArray.length) {
     return (
       <div className="search-bar">
         <ul>
           {searchArray.map((tag) => (
-            <Tag tag={tag} key={tag} onRemoveTag={onRemoveTag} />
+            <Tag tag={tag} key={tag} />
           ))}
         </ul>
         <div onClick={onClear} className="clear">
@@ -105,7 +84,8 @@ function Search({ searchArray, onClear, onRemoveTag }) {
   }
 }
 
-function Tag({ tag, onRemoveTag }) {
+function Tag({ tag }) {
+  const { onRemoveTag } = useJobs();
   return (
     <li className="tag">
       <span>{tag}</span>
@@ -119,18 +99,12 @@ function Tag({ tag, onRemoveTag }) {
   );
 }
 
-function Job({ job, onAddTag }) {
+function Job({ job }) {
   return (
     <div className={`job ${job.featured ? "job-featured" : ""} `}>
       <img className="job-logo" src={job.logo} alt="logo" />
       <Details job={job} />
-      <Tags
-        role={job.role}
-        level={job.level}
-        lang={job.languages}
-        tools={job.tools}
-        onAddTag={onAddTag}
-      />
+      <Tags job={job} />
     </div>
   );
 }
@@ -156,13 +130,13 @@ function Details({ job }) {
   );
 }
 
-function Tags({ role, level, lang, tools, onAddTag }) {
-  const total = lang.concat(...tools);
-
+function Tags({ job }) {
+  const total = job.languages.concat(...job.tools);
+  const { onAddTag } = useJobs();
   return (
     <ul className="tags">
-      <li onClick={() => onAddTag(role)}>{role}</li>
-      <li onClick={() => onAddTag(level)}>{level}</li>
+      <li onClick={() => onAddTag(job.role)}>{job.role}</li>
+      <li onClick={() => onAddTag(job.level)}>{job.level}</li>
       {total.map((t) => (
         <li
           onClick={() => {

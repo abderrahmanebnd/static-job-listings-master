@@ -1,13 +1,225 @@
-body {
-  margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+:root {
+  --Desaturated-Dark-Cyan: hsl(180, 29%, 50%) ;
+  --Light-Grayish-Cyan1: hsl(180, 52%, 96%);
+  --Light-Grayish-Cyan2: hsl(180, 31%, 95%);
+  --Dark-Grayish-Cyan: hsl(180, 8%, 52%);
+  --Very--Dark-Grayish-Cyan: hsl(180, 14%, 20%);
 }
 
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
+/* begin global rules  */
+*,
+::after,
+::before {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
 }
+html {
+  scroll-behavior: smooth;
+  font-size: 62.5%;
+}
+
+body {
+  font-family: "League Spartan", sans-serif;
+  font-size: 15px;
+    font-weight: 500;
+  background-color: var(--Light-Grayish-Cyan1) ;
+}
+
+.container {
+  padding-left: 15px;
+  padding-right: 15px;
+  margin-left: auto;
+  margin-right: auto;
+
+}
+
+/* Small */
+@media (min-width: 768px) {
+  .container {
+    width: 750px;
+  }
+}
+
+/* Medium */
+@media (min-width: 992px) {
+  .container {
+    width: 970px;
+  }
+}
+
+/* Large */
+@media (min-width: 1200px) {
+  .container {
+    width: 1170px;
+  }
+}
+
+ul {
+  list-style: none;
+}
+
+a {
+  text-decoration: none;
+}
+
+/* end global rules  */
+.header {
+  width: 100%;
+  background: var(--Desaturated-Dark-Cyan);
+}
+
+.main {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  gap: 25px;
+  padding: 70px 0 50px;
+  position: relative;
+}
+
+.job {
+  background-color: #fff;
+  box-shadow: 0px 5px 10px rgb(91, 164, 164,0.3);
+  width: 100%;
+  padding:25px 35px;
+  border-radius: 5px;
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+@media (max-width:767px) {
+  .job {
+    flex-direction: column;
+    text-align: center;
+  }
+}
+
+.job-featured {
+  border-left: 5px solid var(--Desaturated-Dark-Cyan) ;
+}
+
+.job-logo {
+  max-width: 100%;
+}
+.details {
+  flex: 1;
+  display: grid;
+  gap: 15px;
+  /* height: 100%; */
+}
+.details div:first-child {
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  
+  & .company {
+    color: var(--Desaturated-Dark-Cyan);
+  }
+
+  & .new,
+  & .featured
+   {
+    padding:10px 10px 7px;
+    border-radius: 20px;
+    color: #fff;
+  }
+  & .featured {
+    background-color: black;
+  }
+  & .new {
+    background-color: var(--Desaturated-Dark-Cyan);
+  }
+
+}
+
+@media (max-width:767px) {
+  .details div:first-child {
+    justify-content: center;
+  }
+}
+ .details .position {
+  font-size: 24px;
+  font-weight: 700;
+}
+
+.details div:last-of-type {
+  color: #888;
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.tags {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px;
+}
+.tags li {
+  background-color: var(--Light-Grayish-Cyan2);
+  color: var(--Desaturated-Dark-Cyan);
+  font-weight: 700;
+  padding: 10px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+.tags li:hover {
+  color: var(--Light-Grayish-Cyan2);
+  background-color: var(--Desaturated-Dark-Cyan);
+}
+
+.search-bar{
+  background-color: #fff;
+  box-shadow: 0px 5px 10px rgb(91, 164, 164, 0.3);
+  width: 100%;
+  padding: 25px 35px;
+  border-radius: 5px;
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  position: absolute;
+  top: 0;
+  transform: translateY(-50%);
+}
+.search-bar ul {
+  display: flex;
+  flex-wrap:wrap ;
+  gap:2px 15px;
+  flex: 1;
+}
+.search-bar li {
+  display: flex;
+  align-items: center;
+  padding: 5px 0;
+}
+.search-bar li span {
+  color: var(--Desaturated-Dark-Cyan);
+  background-color: var(--Light-Grayish-Cyan2);
+  padding: 8px 8px 6px;
+  border-radius: 5px 0 0 5px;
+  font-weight: 700;
+}
+.search-bar li .remove {
+  background-color: var(--Desaturated-Dark-Cyan);
+  padding: 8px 8px 6px;
+  border-radius: 0 5px 5px 0;
+  cursor: pointer;
+  transition: 0.3s;
+}
+.search-bar li .remove:hover {
+  background-color: var(--Very--Dark-Grayish-Cyan);
+}
+
+.clear {
+  cursor: pointer;
+  font-size: 17px;
+}
+.clear:hover {
+  color: var(--Desaturated-Dark-Cyan);
+  text-decoration: underline;
+}
+
