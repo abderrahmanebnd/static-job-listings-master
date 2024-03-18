@@ -6,7 +6,8 @@ This is a solution to the [Job listings with filtering challenge on Frontend Men
 
 - [The challenge](#the-challenge)
 - [Screenshot](#screenshot)
-  - [Built with](#built-with)
+- [Links](#links)
+- [Built with](#built-with)
 
 ### The challenge
 
@@ -21,6 +22,10 @@ Users should be able to:
 ![](./public/screenShots/screenshot1.jpg)
 ![](./public/screenShots/screenshot2.jpg)
 
+### Links
+
+- [Live DEMO](https://static-job-listings-master-delta.vercel.app/)
+- 
 ### Built with
 
 - CSS custom properties
