@@ -1,10 +1,10 @@
 import { useEffect, useState } from "react";
-
+import { jobs as jobsArray } from "./data";
 export default function App() {
   return (
     <div>
       <Header />
-      <Main />
+      <Main jobs={jobsArray} />
     </div>
   );
 }
@@ -31,8 +31,7 @@ function Header() {
   );
 }
 
-function Main() {
-  const [jobs, setJobs] = useState([]);
+function Main({ jobs }) {
   const [searchedTags, setSearchedTags] = useState([]);
 
   const searchedJobs = searchedTags.length
@@ -41,22 +40,6 @@ function Main() {
         return searchedTags.every((searchedTag) => tags.includes(searchedTag));
       })
     : jobs;
-
-  useEffect(function () {
-    async function fetchData() {
-      try {
-        const res = await fetch("http://localhost:9000/jobs");
-        if (!res.ok) {
-          throw new Error("Something is wrong !");
-        }
-        const data = await res.json();
-        setJobs(data);
-      } catch (err) {
-        console.log(err);
-      }
-    }
-    fetchData();
-  }, []);
 
   function handleAddSearchTag(tag) {
     if (!searchedTags.includes(tag))
